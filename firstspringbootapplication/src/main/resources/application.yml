@@ -1,0 +1,54 @@
+#server:
+#    port: 8080
+#    
+#spring:
+#  profiles:
+#    active: prod
+#
+#---
+#
+#spring:
+#    profiles: prod
+#    datasource:
+#        driver-class-name: org.postgresql.Driver
+#        password: postgres
+#        url: jdbc:postgresql://localhost:5432/FSBA
+#        username: postgres
+#    jpa:
+#        hibernate:
+#            ddl-auto: update
+#        show-sql: true
+#welcome:
+#    message: Welcome to Spring Boot Application......!!!
+#    
+#---
+#
+#spring:
+#    profiles: dev
+#    datasource:
+#        driver-class-name: org.postgresql.Driver
+#        password: postgres
+#        url: jdbc:postgresql://localhost:5432/FSBA-DEV
+#        username: postgres
+#    jpa:
+#        hibernate:
+#            ddl-auto: update
+#        show-sql: true
+#welcome:
+#    message: Welcome to Spring Boot Application......!!!
+#    
+#---
+#
+#spring:
+#    profiles: qa
+#    datasource:
+#        driver-class-name: org.postgresql.Driver
+#        password: postgres
+#        url: jdbc:postgresql://localhost:5432/FSBA-QA
+#        username: postgres
+#    jpa:
+#        hibernate:
+#            ddl-auto: update
+#        show-sql: true
+#welcome:
+#    message: Welcome to Spring Boot Application......!!!
