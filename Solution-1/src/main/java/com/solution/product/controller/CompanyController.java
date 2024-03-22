@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.solution.product.model.Company;
 import com.solution.product.service.CompanyService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class CompanyController {
 
@@ -17,7 +19,7 @@ public class CompanyController {
     private CompanyService companyService;
 
     @PostMapping("/registercompany")
-    public ResponseEntity<?> registerCompany(@RequestBody Company company) {
+    public ResponseEntity<?> registerCompany(@Valid @RequestBody Company company) {
         try {
             // Call the registerCompany method in the service layer
             Company registeredCompany = companyService.registerCompany(company);
