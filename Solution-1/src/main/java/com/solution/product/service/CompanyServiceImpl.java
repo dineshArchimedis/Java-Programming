@@ -7,6 +7,7 @@ import org.springframework.mail.MailException;
 //import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 //import com.solution.product.config.MailConfig;
@@ -24,6 +25,18 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
     private JavaMailSender emailSender;
+	
+	// Inject BCryptPasswordEncoder
+//	@Autowired
+//    private final BCryptPasswordEncoder passwordEncoder;
+//
+//    // Constructor injection for BCryptPasswordEncoder
+//    public CompanyServiceImpl(BCryptPasswordEncoder passwordEncoder) {
+//        this.passwordEncoder = passwordEncoder;
+//    }
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	// Method to register a new company
 	@Override
@@ -40,7 +53,16 @@ public class CompanyServiceImpl implements CompanyService {
 
 		// Generate password
 		String password = generatePassword();
-		company.setPassword(password);
+//		company.setPassword(password);
+		
+		String hashedPassword = this.passwordEncoder.encode(password);
+		company.setPassword(hashedPassword);
+		
+		
+		
+//		// Hash the password using bcrypt
+//        String hashedPassword = passwordEncoder.encode(password);
+//        company.setPassword(hashedPassword);
 
 		// Save company to the database
 		Company savedCompany = companyRepository.save(company);
