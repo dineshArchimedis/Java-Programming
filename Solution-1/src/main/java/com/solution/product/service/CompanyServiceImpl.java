@@ -10,6 +10,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.solution.product.exception.CompanyValidationException;
+import com.solution.product.exception.ItemAlreadyExistsException;
+import com.solution.product.exception.MailSendingException;
 //import com.solution.product.config.MailConfig;
 import com.solution.product.model.Company;
 import com.solution.product.repository.CompanyRepository;
@@ -46,6 +49,17 @@ public class CompanyServiceImpl implements CompanyService {
 				|| company.getCompanyEmail() == null) {
 			throw new IllegalArgumentException("Company object or its mandatory fields are null.");
 		}
+		
+		// Check if a company with the same email already exists
+        Company existingCompany = companyRepository.findByCompanyEmail(company.getCompanyEmail());
+        if (existingCompany != null) {
+            throw new ItemAlreadyExistsException("A company with the same email already exists.");
+        }
+        
+        Company existingCompanyName = companyRepository.findByCompanyName(company.getCompanyName());
+        if (existingCompanyName != null) {
+            throw new ItemAlreadyExistsException("A company with the same name already exists.");
+        }
 
 		// Generate username
 		String username = generateUsername(company.getCompanyName());
@@ -164,12 +178,18 @@ public class CompanyServiceImpl implements CompanyService {
         message.setSubject("Your Account Information");
         message.setText("Dear User,\n\nYour account credentials are as follows:\n\nUsername: " + username + "\nPassword: " + password);
 
+//        try {
+//        	emailSender.send(message);
+//            System.out.println("Email sent successfully to: " + recipientEmail);
+//        } catch (MailException ex) {
+//            // Handle exception properly
+//            ex.printStackTrace();
+//        }
         try {
-        	emailSender.send(message);
-            System.out.println("Email sent successfully to: " + recipientEmail);
+            emailSender.send(message);
         } catch (MailException ex) {
-            // Handle exception properly
             ex.printStackTrace();
+            throw new MailSendingException("Failed to send email: " + ex.getMessage());
         }
     }
 }
